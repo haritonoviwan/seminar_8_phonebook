@@ -72,18 +72,32 @@ def search_contact():
             print(contact_str)
         print()
 
+def copy_entry(source_file, destination_file, entry_number):
+    with open(source_file, 'r', encoding='UTF-8') as source:
+        entries = source.read().rstrip().split("\n\n")
+
+        if 0 < entry_number <= len(entries):
+            entry_to_copy = entries[entry_number - 1]
+            
+            with open(destination_file, 'a', encoding='UTF-8') as dest:
+                dest.write(entry_to_copy + '\n\n')
+            print(f"Запись номер {entry_number} успешно скопирована.")
+        else:
+            print(f"Ошибка: записи с номером {entry_number} не существует.")
+
 def u_interface():
     file_append()
     command = ""
-    while command != "4":
+    while command != "5":
         print("Меню: \n"
-            "1. Добавить контакт \n"
-            "2. Найти контакт\n"
-            "3. Вывести все контакты\n"
-            "4. Выход\n")
+              "1. Добавить контакт \n"
+              "2. Найти контакт\n"
+              "3. Вывести все контакты\n"
+              "4. Копировать запись\n"
+              "5. Выход\n")
         command = input("Выберите пункт меню: ")
 
-        while command not in ("1", "2", '3', '4'):
+        while command not in ("1", "2", '3', '4', '5'):
             print("Некорректный ввод. Повторите попытку\n")
             command = input("Выберите пункт меню: ")            
         print()
@@ -95,6 +109,9 @@ def u_interface():
             case "3":
                 print_data()
             case "4":
+                entry_number = int(input("Введите номер записи для копирования: "))
+                copy_entry('phonebook.txt', 'copied_phonebook.txt', entry_number)
+            case "5":
                 print("Пока 👋")
 
 # input_data()
